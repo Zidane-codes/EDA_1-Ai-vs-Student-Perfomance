@@ -7,7 +7,7 @@ import matplotlib.pyplot as pt
 data = pd.read_csv("Z:/Projects/EDA_1/ai_student_impact_dataset.csv")
 print(data.head(10))                                                         #printing first 10 records to check the data frame
 
-#check for null values
+#check for null values 
 nullv = data.isnull().sum()
 print(nullv)
 
