@@ -6,7 +6,7 @@ import matplotlib.pyplot as pt
 #reading the csv data file and converting into pandas dataframe
 data = pd.read_csv("Z:/Projects/EDA_1/ai_student_impact_dataset.csv")
 print(data.head(10))                                                         #printing first 10 records to check the data frame
-
+      
 #check for null values 
 nullv = data.isnull().sum()
 print(nullv)
@@ -61,3 +61,31 @@ cleaned_genai_hours.boxplot(column=['Weekly_GenAI_Hours'], ax=axes[1])
 axes[1].set_title('After')
 pt.show()
 
+#plotting histogram for Pre semester gpa
+sb.histplot(data['Pre_Semester_GPA'],kde=True)
+pt.title('Pre Semester GPA')
+pt.show()
+
+#plotting histogram for Post semester gpa
+sb.histplot(data['Post_Semester_GPA'],kde=True)
+pt.title('Post Semester GPA')
+pt.show()
+
+""" The values of 4.0 are fairly very high than its neighbors, so looking into it. Checking the counts of each value"""
+print(data['Post_Semester_GPA'].value_counts().sort_index(ascending=False).head(15))
+""" Post_Semester_GPA shows a capping artifact at 4.0 (4,804 students vs ~20-30 at neighboring values), suggesting the dataset enforces a maximum GPA ceiling rather than reflecting organic distribution."""
+""" This was because of decimal values of GPA and for values such as 3.999 they get skimmed to 4.0 """
+""" To prevent this, I cut off the decimals to just one decimal, so that the values are relevant and also work properly with graphs"""
+data['Post_Semester_GPA']=data['Post_Semester_GPA'].round(1)
+data['Pre_Semester_GPA']=data['Pre_Semester_GPA'].round(1)
+data['Difference_in_GPA']=data['Difference_in_GPA'].round(1)
+
+col=['Pre_Semester_GPA','Post_Semester_GPA','Difference_in_GPA']
+fig,axes=pt.subplots(2,2,figsize=(12,12))
+axes=axes.flatten()
+for i,col in (col):
+    pt.hist(columns=data[col],ax=axes[i])
+    axes[i].set_title(col)
+    axes[i].set_xticklabels([])
+
+pt.show()
