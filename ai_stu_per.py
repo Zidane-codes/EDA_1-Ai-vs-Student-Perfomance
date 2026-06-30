@@ -139,3 +139,19 @@ pt.tight_layout()
 pt.show()
 
 #plotting countplots for categorical data
+
+fig,axes=pt.subplots(1,3,figsize=(13,5))
+sb.countplot(y=data['Primary_Use_Case'],data=data, ax=axes[0])
+axes[0].set_title('Primary Use Case')
+axes[0].set_ylabel('')
+
+sb.countplot(y=data['Major_Category'],data=data,ax=axes[1])
+axes[1].set_title('Major Category')
+axes[1].set_ylabel('')
+
+sb.countplot(x=data['Paid_Subscription'],data=data, ax=axes[2])
+axes[2].set_title('Paid Subscription')
+axes[2].set_ylabel('')
+
+pt.subplots_adjust(hspace=0.4,wspace=0.4,left=0.2)
+pt.show()
